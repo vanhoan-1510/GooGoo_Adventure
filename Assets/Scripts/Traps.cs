@@ -9,89 +9,66 @@ public class Traps : MonoBehaviour
 
     private Rigidbody2D rb;
     private GameObject player;
-    private GameObject wall1, wall2;
-
+    private GameObject wall1, wall2, spikeTrap1, spikeTrap2, spikeTrap3, hiddenBlock;
 
     // Start is called before the first frame update
     private void Awake()
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
         player = GameObject.FindGameObjectWithTag("Player");
+
         wall1 = GameObject.FindGameObjectWithTag("WallTrap1");
         wall2 = GameObject.FindGameObjectWithTag("WallTrap2");
+
+        spikeTrap1 = GameObject.FindGameObjectWithTag("SpikeTrap1");
+        spikeTrap2 = GameObject.FindGameObjectWithTag("SpikeTrap2");
+        spikeTrap3 = GameObject.FindGameObjectWithTag("SpikeTrap3");
+
+        hiddenBlock = GameObject.FindGameObjectWithTag("QuestionBlock");
 
         //enabled = false;
     }
 
-    //    private void OnBecameVisible()
-    //    {
-    //        #if UNITY_EDITOR
-    //        enabled = !EditorApplication.isPaused;
-    //        #else
-    //        enabled = true;
-    //        #endif
-    //    }
-    //    private void OnBecameInvisible()
-    //    {
-    //        enabled = false;
-    //    }
-    //    private void OnEnable()
-    //    {
-    //        rb.WakeUp();
-    //    }
-    //    private void OnDisable()
-    //    {
-    //        rb.velocity = Vector2.zero;
-    //        rb.Sleep();
-    //    }
+    private void Start()
+    {
+        spikeTrap1.SetActive(false);
+        spikeTrap2.SetActive(false);
+        hiddenBlock.SetActive(false);
+    }
 
     void Update()
-    { 
+    {
+        Trap();
+    }
+
+    private void Trap()
+    {
         float playerPositionX = player.transform.position.x;
         float playerPositionY = player.transform.position.y;
-        if (playerPositionX >= 22.5f)
+        if (playerPositionX >= 23f)
         {
             rb.gravityScale = 30f;
+            if (rb.position.y <= 0)
+            {
+                hiddenBlock.SetActive(true);
+            }
+
         }
 
         if (playerPositionX >= 35.3f && playerPositionX <= 37.5f && playerPositionY <= 2.2)
         {
-            wall1.transform.position = new Vector3(35f,1f,0);
+            wall1.transform.position = new Vector3(35f, 1f, 0);
             wall2.transform.position = new Vector3(38f, 1f, 0);
         }
-        //if (Input.GetKeyDown("z"))
-        //{
-        //    rb.transform.position = new Vector3();
-        //}
 
+        if (playerPositionX >= 28.3f && playerPositionX <= 33.5f && playerPositionY <= 0.1)
+        {
+            spikeTrap1.SetActive(true);
+        }
 
+        if (playerPositionX >= 34f && playerPositionX <= 39f && playerPositionY <= 0.1)
+        {
+            spikeTrap2.SetActive(true);
+        }
     }
-
-    //    private void FixedUpdate()
-    //    {
-    //        velocity.x = direction.x * speed;
-    //        velocity.y += Physics2D.gravity.y * Time.fixedDeltaTime;
-
-    //        //rb.MovePosition(rb.position + velocity * Time.fixedDeltaTime);
-
-    //        //if (rb.Raycast(direction))
-    //        //{
-    //        //    rb.gravityScale = 5f;
-    //        //}
-
-    //        //if (rb.Raycast(Vector2.down))
-    //        //{
-    //        //    rb.gravityScale = 5f;
-    //        //}
-
-    //        if (direction.x > 0f)
-    //        {
-    //            rb.gravityScale = 5f;
-    //        }
-    //        else if (direction.x < 0f)
-    //        {
-    //            rb.gravityScale = 5f;
-    //        }
-    //    }
-
 }

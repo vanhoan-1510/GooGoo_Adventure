@@ -7,6 +7,9 @@ TagManager:
   - QuestionBlock
   - WallTrap1
   - WallTrap2
+  - SpikeTrap1
+  - SpikeTrap2
+  - SpikeTrap3
   layers:
   - Default
   - TransparentFX

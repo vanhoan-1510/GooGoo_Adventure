@@ -8,6 +8,8 @@ public class QuestionBlock : MonoBehaviour
     public int maxHits = -1;
     private bool animating;
 
+
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (!animating && maxHits != 0 && collision.gameObject.CompareTag("Player"))
@@ -23,6 +25,7 @@ public class QuestionBlock : MonoBehaviour
     {
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.enabled = true; // show if hidden
+        
 
         maxHits--;
         if (maxHits == 0)
@@ -44,7 +47,6 @@ public class QuestionBlock : MonoBehaviour
 
         Vector3 restingPosition = transform.localPosition;
         Vector3 animatedPosition = restingPosition + Vector3.up * 0.5f;
-        Debug.Log("hello");
 
 
         yield return Move(restingPosition, animatedPosition);

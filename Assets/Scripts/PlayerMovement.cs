@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     private float dirX = 0f;
     private float moveSpeed = 5.5f;
     private float jumpForce = 20f;
+    private float deltax = 9f;
 
 
 
@@ -46,21 +47,26 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetButtonDown("Jump") && IsGrounded())
         {
-            rb.velocity = new Vector3(rb.velocity.x, jumpForce);
+            Vector2 position = transform.position;
+            position += rb.velocity * Time.fixedDeltaTime;
+            Debug.Log(lastLeft);
+            // clamp within the screen bounds
+            float leftEdge = Mathf.Max(position.x - deltax, lastLeft);
+            lastLeft = leftEdge;
+            float rightEdge = position.x + deltax;
+            if (position.x > leftEdge && position.x < rightEdge) { 
+                rb.velocity = new Vector3(rb.velocity.x, jumpForce);
+            }
+
         }
         UpdateAnimationState();
     }
-
+    float lastLeft = float.MinValue;
     private void FixedUpdate()
     {
         // move mario based on his velocity
-        Vector2 position = rb.position;
-        position += rb.velocity * Time.fixedDeltaTime;
-
-        // clamp within the screen bounds
-        Vector2 leftEdge = camera.ScreenToWorldPoint(Vector2.zero);
-        Vector2 rightEdge = camera.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
-        position.x = Mathf.Clamp(position.x, leftEdge.x + 0.5f, rightEdge.x - 0.5f);
+        //position.x = Mathf.Clamp(position.x, leftEdge, rightEdge);
+        //Debug.Log(lastLeft + ", " + leftEdge + "x = "+ position.x);
 
         //rb.MovePosition(position);
     }
