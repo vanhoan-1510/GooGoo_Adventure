@@ -8,13 +8,10 @@ public class PlayerMovement : MonoBehaviour
     private Animator animator;
     private SpriteRenderer spriteRenderer;
     private CapsuleCollider2D capsuleCollider;
-    private new Camera camera;
-    //private Vector2 velocity;
 
     private float dirX = 0f;
     private float moveSpeed = 5.5f;
     private float jumpForce = 20f;
-    private float deltax = 9f;
 
 
 
@@ -24,7 +21,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
-        camera = Camera.main;
         capsuleCollider = GetComponent<CapsuleCollider2D>();
 
         rb = GetComponent<Rigidbody2D>();
@@ -47,28 +43,10 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetButtonDown("Jump") && IsGrounded())
         {
-            Vector2 position = transform.position;
-            position += rb.velocity * Time.fixedDeltaTime;
-            Debug.Log(lastLeft);
-            // clamp within the screen bounds
-            float leftEdge = Mathf.Max(position.x - deltax, lastLeft);
-            lastLeft = leftEdge;
-            float rightEdge = position.x + deltax;
-            if (position.x > leftEdge && position.x < rightEdge) { 
-                rb.velocity = new Vector3(rb.velocity.x, jumpForce);
-            }
+            rb.velocity = new Vector3(rb.velocity.x, jumpForce);
 
         }
         UpdateAnimationState();
-    }
-    float lastLeft = float.MinValue;
-    private void FixedUpdate()
-    {
-        // move mario based on his velocity
-        //position.x = Mathf.Clamp(position.x, leftEdge, rightEdge);
-        //Debug.Log(lastLeft + ", " + leftEdge + "x = "+ position.x);
-
-        //rb.MovePosition(position);
     }
 
     private void UpdateAnimationState()

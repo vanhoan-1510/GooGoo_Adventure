@@ -8,24 +8,32 @@ public class QuestionBlock : MonoBehaviour
     public int maxHits = -1;
     private bool animating;
 
+    PlatformEffector2D effector;
+    SpriteRenderer spriteRenderer;
 
+    public void Start()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        effector = spriteRenderer.GetComponent<PlatformEffector2D>();
+    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+
         if (!animating && maxHits != 0 && collision.gameObject.CompareTag("Player"))
         {
             if (collision.transform.DotTest(transform, Vector2.up))
             {
                 Hit();
+                effector.enabled = false;
             }
         }
     }
 
     private void Hit()
     {
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.enabled = true; // show if hidden
-        
+
 
         maxHits--;
         if (maxHits == 0)
